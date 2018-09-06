@@ -5,8 +5,14 @@ import java.sql.Timestamp;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+
+//for sauce labs integration
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.URL;
 
 import SpecmatePageClasses.LoginElements;
 import SpecmatePageClasses.ProjectExplorerElements;
@@ -15,12 +21,25 @@ import SpecmatePageClasses.RequirementOverviewElements;
 import SpecmatePageClasses.CEGEditorElements;
 
 public class UC3ModelCEG {
+	
+	//for sauce labs integration
+	public static final String USERNAME = "junkerm_qualicen";
+	public static final String ACCESS_KEY = "YOUR_ACCESS_KEY"; //TODO: add access key
+	public static final String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, Exception {
+		
+		DesiredCapabilities caps = DesiredCapabilities.chrome();
+		caps.setCapability("platform", "Windows 10");
+		caps.setCapability("version", "latest");
+
 			
 		//TODO: Download the browser drivers from https://www.seleniumhq.org/download/ and add the corresponding path:
 		System.setProperty("webdriver.chrome.driver", "/Users/janarudolf/Downloads/chromedriver");
-		WebDriver driver = new ChromeDriver();
+		
+		//to run with sauce labs
+		WebDriver driver = new RemoteWebDriver(new URL(URL), caps);
+		//WebDriver driver = new ChromeDriver();
 		Actions builder = new Actions(driver);
 		
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS); //page synchronization
@@ -71,6 +90,7 @@ public class UC3ModelCEG {
 		
 		projectExplorer.open("Erlaubnis Autofahren");
 		requirementOverview.deleteModel(modelName);
+		driver.quit();
 		//close browser
 		//driver.close();
 	}
