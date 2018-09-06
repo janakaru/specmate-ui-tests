@@ -23,8 +23,8 @@ import SpecmatePageClasses.CEGEditorElements;
 public class UC3ModelCEG {
 	
 	//for sauce labs integration
-	public static final String USERNAME = "junkerm_qualicen";
-	public static final String ACCESS_KEY = "YOUR_ACCESS_KEY"; //TODO: add access key
+	public static final String USERNAME = System.getenv("SAUCE_USERNAME");
+	public static final String ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
 	public static final String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
 
 	public static void main(String[] args) throws InterruptedException, Exception {
@@ -32,6 +32,7 @@ public class UC3ModelCEG {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		caps.setCapability("platform", "Windows 10");
 		caps.setCapability("version", "latest");
+		caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"));
 
 			
 		//TODO: Download the browser drivers from https://www.seleniumhq.org/download/ and add the corresponding path:
